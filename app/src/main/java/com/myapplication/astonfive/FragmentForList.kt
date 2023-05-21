@@ -46,8 +46,39 @@ class FragmentForList : Fragment() {
         val bundle = Bundle()
         bundle.putInt("iditem",id_contact)
         fragForEdit.arguments = bundle
+        val minDpForTable = 600
+        val smallestScreenDp = requireActivity().resources.configuration.smallestScreenWidthDp
+        if (smallestScreenDp>minDpForTable){
+            startForTableMode(fragForEdit)
+        }else{
+            settingForPortaitAndLansdscapeForPhone(fragForEdit)
+        }
+    }
+    fun settingForPortaitAndLansdscapeForPhone(fragmentEdit:Fragment){
+        val orientation = requireActivity().resources.configuration.orientation
+        if (orientation==2){
+            startForLandscapeMode(fragmentEdit)
+        }else{
+            startPortraitMode(fragmentEdit)
+        }
+    }
+    fun startPortraitMode(fragmentEdit:Fragment){
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,fragForEdit)
+            .replace(R.id.fragment_container,fragmentEdit)
+            .addToBackStack(null)
+            .commit()
+    }
+    fun startForLandscapeMode(fragmentEdit:Fragment){
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container2,fragmentEdit)
+            .addToBackStack(null)
+            .commit()
+    }
+    fun startForTableMode(fragmentEdit:Fragment){
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container3,fragmentEdit)
             .addToBackStack(null)
             .commit()
     }

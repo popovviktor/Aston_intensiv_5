@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.fragment.app.FragmentManager
 
 
 class FragmentForEditItem : Fragment() {
@@ -37,16 +38,52 @@ class FragmentForEditItem : Fragment() {
         edit_phone.setText(getContactById.phone_number)
         btn_save.setOnClickListener {
             updateContact(id_contact)
-            startFragmentListContact()
+            val minDpForTable = 600
+            val smallestScreenDp = requireActivity().resources.configuration.smallestScreenWidthDp
+            if (smallestScreenDp>minDpForTable){
+                startFragmentListContactFromTableMode()
+            }else{
+                settingForPortaitAndLansdscapeForPhone()
+            }
         }
     }
-    fun startFragmentListContact(){
+    fun settingForPortaitAndLansdscapeForPhone(){
+        val orientation = requireActivity().resources.configuration.orientation
+        if (orientation==2){
+            startFragmentListContactFromLandscapeMode()
+        }else{
+            startFragmentListContactFromPortraitMode()
+        }
+    }
+    fun startFragmentListContactFromTableMode(){
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container3, Fragment())
+            .commit()
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container,FragmentForList())
             .commit()
-
+        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+    fun startFragmentListContactFromLandscapeMode(){
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container2, Fragment())
+            .commit()
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container,FragmentForList())
+            .commit()
+        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+    fun startFragmentListContactFromPortraitMode(){
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container,FragmentForList())
+            .commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
