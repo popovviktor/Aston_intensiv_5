@@ -20,11 +20,6 @@ class FragmentForEditItem : Fragment() {
         initFieldsAndButton(view)
 
     }
-    fun updateContact(id_contact:Int){
-        val contactEdited = Contact(id_contact,edit_name.text.toString(),
-            edit_surname.text.toString(),edit_phone.text.toString())
-        RepositoryContacts.updateContact(contactEdited)
-    }
     fun initFieldsAndButton(view: View){
         edit_name = view.findViewById(R.id.editName)
         edit_surname = view.findViewById(R.id.edit_surname)
@@ -45,6 +40,11 @@ class FragmentForEditItem : Fragment() {
                 settingForPortaitAndLansdscapeForPhone()
             }
         }
+    }
+    fun updateContact(id_contact:Int){
+        val contactEdited = Contact(id_contact,edit_name.text.toString(),
+            edit_surname.text.toString(),edit_phone.text.toString())
+        RepositoryContacts.updateContact(contactEdited)
     }
     fun settingForPortaitAndLansdscapeForPhone(){
         val orientation = requireActivity().resources.configuration.orientation

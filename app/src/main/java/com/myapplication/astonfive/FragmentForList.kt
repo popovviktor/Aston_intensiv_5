@@ -59,7 +59,8 @@ class FragmentForList : Fragment() {
         }
     }
     fun startPortraitMode(fragmentEdit:Fragment){
-        parentFragmentManager.beginTransaction()
+        parentFragmentManager
+            .beginTransaction()
             .replace(R.id.fragment_container,fragmentEdit)
             .addToBackStack(null)
             .commit()
