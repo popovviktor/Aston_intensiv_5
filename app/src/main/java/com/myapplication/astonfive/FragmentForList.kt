@@ -7,17 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 
 
 class FragmentForList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val contacts = RepositoryContacts.getList()
-        clearBackStack()
         addCotactsInLinearLayout(view,contacts)
-    }
-    fun clearBackStack(){
-        parentFragmentManager.popBackStack()
     }
     fun addCotactsInLinearLayout(view: View, contacts:ArrayList<Contact>){
         val linear_for_contacts = view.findViewById<LinearLayout>(R.id.linear_lt_for_items)
@@ -44,11 +41,10 @@ class FragmentForList : Fragment() {
     fun startFragmentEditContactWithBundleIdItem(id_contact:Int){
         val fragForEdit = FragmentForEditItem()
         val bundle = Bundle()
-        bundle.putInt("iditem",id_contact)
+        bundle.putInt(Constants.ID_KEY,id_contact)
         fragForEdit.arguments = bundle
-        val minDpForTable = 600
         val smallestScreenDp = requireActivity().resources.configuration.smallestScreenWidthDp
-        if (smallestScreenDp>minDpForTable){
+        if (smallestScreenDp>Constants.MIN_DP_FOR_TABLE){
             startForTableMode(fragForEdit)
         }else{
             settingForPortaitAndLansdscapeForPhone(fragForEdit)
@@ -56,7 +52,7 @@ class FragmentForList : Fragment() {
     }
     fun settingForPortaitAndLansdscapeForPhone(fragmentEdit:Fragment){
         val orientation = requireActivity().resources.configuration.orientation
-        if (orientation==2){
+        if (orientation==Constants.LANDSCAPE_ORIENTATION){
             startForLandscapeMode(fragmentEdit)
         }else{
             startPortraitMode(fragmentEdit)

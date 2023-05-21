@@ -30,7 +30,7 @@ class FragmentForEditItem : Fragment() {
         edit_surname = view.findViewById(R.id.edit_surname)
         edit_phone = view.findViewById(R.id.edit_phone)
         btn_save = view.findViewById(R.id.button_save)
-        val id_contact = arguments?.getInt("iditem") ?: 0
+        val id_contact = arguments?.getInt(Constants.ID_KEY) ?: 0
         val getContactById = RepositoryContacts.getContact(id_contact)
             ?: Contact(0,"","","")
         edit_name.setText(getContactById.name)
@@ -38,9 +38,8 @@ class FragmentForEditItem : Fragment() {
         edit_phone.setText(getContactById.phone_number)
         btn_save.setOnClickListener {
             updateContact(id_contact)
-            val minDpForTable = 600
             val smallestScreenDp = requireActivity().resources.configuration.smallestScreenWidthDp
-            if (smallestScreenDp>minDpForTable){
+            if (smallestScreenDp>Constants.MIN_DP_FOR_TABLE){
                 startFragmentListContactFromTableMode()
             }else{
                 settingForPortaitAndLansdscapeForPhone()
@@ -49,7 +48,7 @@ class FragmentForEditItem : Fragment() {
     }
     fun settingForPortaitAndLansdscapeForPhone(){
         val orientation = requireActivity().resources.configuration.orientation
-        if (orientation==2){
+        if (orientation==Constants.LANDSCAPE_ORIENTATION){
             startFragmentListContactFromLandscapeMode()
         }else{
             startFragmentListContactFromPortraitMode()
